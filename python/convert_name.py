@@ -43,7 +43,7 @@ def info(text: str) -> str:
 def convert(row: Dict) -> Person:
     birth_year = int(row['birthYear']) if row['birthYear'] != '\\N' else None
     death_year = int(row['deathYear']) if row['deathYear'] != '\\N' else None
-    profession = row['primaryProfession'].split(',') if row['primaryProfession'] != '\\N' else []
+    profession = row['primaryProfession'].split(',') if row['primaryProfession'] != '' else []
     return Person(
         primary_name=row['primaryName'],
         primary_profession=profession,

@@ -4,7 +4,9 @@ set -o pipefail
 readonly C=$(cd $(dirname $0); pwd)
 
 function download_imdb_dataset {
-    curl 'https://datasets.imdbws.com/name.basics.tsv.gz' -o - | gzip -d > ${C}/rawdata/name.basics.tsv
+    curl 'https://datasets.imdbws.com/name.basics.tsv.gz' -o - | \
+      gzip -d | \
+      awk -F"\t" '{ if ($6 != "\\N" && $5 != "" && $3 != "\\N") { print $0 }}' > ${C}/rawdata/name.basics.tsv
 }
 
 function provision_index {
@@ -26,7 +28,7 @@ function provision_index {
                     "type": "integer"
                 },
                 "primary_profession": {
-                    "type": "text"
+                    "type": "keyword"
                 }
             }
         }

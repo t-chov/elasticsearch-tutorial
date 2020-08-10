@@ -6,10 +6,10 @@ Elasticsearch tutorial.
 
 1. Use docker-compose
 2. Provision data
-    - It uses IMDb datasets.
-    - Data will be in `rawdata/`
+    - It uses IMDb datasets.(sanitize with some condition)
+    - Data will place in `rawdata/`
 
 ```sh
 $ docker-compose up
-$ sh provision.sh
+$ bash provision.sh
 ```
