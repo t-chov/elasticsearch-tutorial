@@ -13,3 +13,8 @@ Elasticsearch tutorial.
 $ docker-compose up
 $ bash provision.sh
 ```
+
+## check URL
+
+- http://localhost:9200/_cat/indices?v
+- http://localhost:9200/imdb_persons/_search?q=kurosawa

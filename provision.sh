@@ -45,7 +45,7 @@ function convert {
         deactivate
     fi
     source ${C}/python/venv/bin/activate
-    python3 ${C}/python/convert_name.py 'http://localhost:9200/imdb_persons/_doc' -f rawdata/name.basics.tsv
+    python3 ${C}/python/convert_name.py 'http://localhost:9200/imdb_persons' -f rawdata/name.basics.tsv
     deactivate
 }
 
