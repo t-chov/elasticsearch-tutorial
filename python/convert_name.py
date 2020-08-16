@@ -8,13 +8,11 @@ Options:
 """
 import json
 import csv
-import requests
 
 from dataclasses import dataclass
-from typing import List, Dict, Optional, Iterable
+from typing import List, Dict, Optional
 from docopt import docopt
-from retry import retry
-from colorama import init, Fore, Style
+from helper import info, put_document
 
 CHUNK_SIZE = 2000
 
@@ -38,10 +36,6 @@ class Person:
         return person
 
 
-def info(text: str) -> str:
-    return Fore.CYAN + text + Style.RESET_ALL
-
-
 def convert(row: Dict) -> Person:
     birth_year = int(row['birthYear']) if row['birthYear'] != '\\N' else None
     death_year = int(row['deathYear']) if row['deathYear'] != '\\N' else None
@@ -55,18 +49,7 @@ def convert(row: Dict) -> Person:
     )
 
 
-@retry(tries=3, delay=1)
-def put_document(es_endpoint: str, docs: Iterable[str]):
-    url = '{}/_bulk'.format(es_endpoint)
-    header = {
-        'Content-Type': 'application/json'
-    }
-    response = requests.put(url, data="\n".join(docs) + "\n", headers=header)
-    response.raise_for_status()
-
-
 if __name__ == "__main__":
-    init()
     options = docopt(__doc__)
     input_filepath = options['--file']
     with open(input_filepath) as input_file:

@@ -10,8 +10,8 @@ function download_imdb_dataset {
     curl 'https://datasets.imdbws.com/title.ratings.tsv.gz' | gzip -d > ${C}/rawdata/title.ratings.tsv
     curl 'https://datasets.imdbws.com/title.basics.tsv.gz' -o - | \
       gzip -d | \
-      awk -F"\t" '{ if ($2 == "movie" && $6 >= 2000) { print $0 } }' | \
-      join - ${C}/rawdata/title.ratings.tsv > ${C}/rawdata/title.basics.tsv
+      awk -F"\t" '{ if ($2 == "movie" && $6 != "\\N" && $6 >= 2000) { print $0 } }' | \
+      join -t "	" - ${C}/rawdata/title.ratings.tsv > ${C}/rawdata/title.basics.tsv
 }
 
 function provision_index {
@@ -56,9 +56,6 @@ function provision_index {
                 "film_year": {
                     "type": "integer"
                 },
-                "runtime_minutes": {
-                    "type": "integer"
-                },
                 "genres": {
                     "type": "keyword"
                 },
@@ -87,6 +84,7 @@ function convert {
     fi
     source ${C}/python/venv/bin/activate
     python3 ${C}/python/convert_name.py 'http://localhost:9200/imdb_persons' -f rawdata/name.basics.tsv
+    python3 ${C}/python/convert_title.py 'http://localhost:9200/movies' -t ${C}/rawdata/title.basics.tsv -n ${C}/rawdata/name.basics.tsv
     deactivate
 }
 
