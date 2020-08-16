@@ -7,6 +7,11 @@ function download_imdb_dataset {
     curl 'https://datasets.imdbws.com/name.basics.tsv.gz' -o - | \
       gzip -d | \
       awk -F"\t" '{ if ($6 != "\\N" && $5 != "" && $3 != "\\N") { print $0 }}' > ${C}/rawdata/name.basics.tsv
+    curl 'https://datasets.imdbws.com/title.ratings.tsv.gz' | gzip -d > ${C}/rawdata/title.ratings.tsv
+    curl 'https://datasets.imdbws.com/title.basics.tsv.gz' -o - | \
+      gzip -d | \
+      awk -F"\t" '{ if ($2 == "movie" && $6 >= 2000) { print $0 } }' | \
+      join - ${C}/rawdata/title.ratings.tsv > ${C}/rawdata/title.basics.tsv
 }
 
 function provision_index {
@@ -29,6 +34,42 @@ function provision_index {
                 },
                 "primary_profession": {
                     "type": "keyword"
+                }
+            }
+        }
+    }
+    '
+    curl -XPUT 'http://localhost:9200/movies' -H 'Content-Type: application/json' -d '
+    {
+        "settings": {
+            "number_of_shards": "1",
+            "number_of_replicas": "1"
+        },
+        "mappings": {
+            "properties": {
+                "primary_title": {
+                    "type": "text"
+                },
+                "original_title": {
+                    "type": "text"
+                },
+                "film_year": {
+                    "type": "integer"
+                },
+                "runtime_minutes": {
+                    "type": "integer"
+                },
+                "genres": {
+                    "type": "keyword"
+                },
+                "average_rating": {
+                    "type": "double"
+                },
+                "num_of_votes": {
+                    "type": "long"
+                },
+                "persons": {
+                    "type": "text"
                 }
             }
         }
