@@ -83,3 +83,4 @@ if __name__ == "__main__":
             else:
                 put_document(options['<ES_ENDPOINT>'], chunked)
                 chunked = []
+        put_document(options['<ES_ENDPOINT>'], chunked)
