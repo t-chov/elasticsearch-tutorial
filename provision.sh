@@ -1,4 +1,4 @@
-#!/use/bin/env bash
+#!/usr/bin/env bash
 set -o pipefail
 
 readonly C=$(cd $(dirname $0); pwd)
