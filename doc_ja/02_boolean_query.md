@@ -131,13 +131,13 @@ curl -i -X POST \
   ]
 }' \
  'http://localhost:9200/movies/_search?pretty'
- ```
+```
 
  この条件だと、EP3が最上位となる。確かにマークハミルが出ていない。
 
  `must` と　`should` は併用できない。
 
- ```json
+```json
  {
   "query": {
     "bool": {
