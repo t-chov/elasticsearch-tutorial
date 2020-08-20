@@ -15,30 +15,6 @@ function download_imdb_dataset {
 }
 
 function provision_index {
-    curl -XPUT 'http://localhost:9200/imdb_persons' -H 'Content-Type: application/json' -d '
-    {
-        "settings": {
-            "number_of_shards": "1",
-            "number_of_replicas": "1"
-        },
-        "mappings": {
-            "properties": {
-                "primary_name": {
-                    "type": "text"
-                },
-                "birth_year": {
-                    "type": "integer"
-                },
-                "death_year": {
-                    "type": "integer"
-                },
-                "primary_profession": {
-                    "type": "keyword"
-                }
-            }
-        }
-    }
-    '
     curl -XPUT 'http://localhost:9200/movies' -H 'Content-Type: application/json' -d '
     {
         "settings": {
@@ -83,7 +59,6 @@ function convert {
         deactivate
     fi
     source ${C}/python/venv/bin/activate
-    python3 ${C}/python/convert_name.py 'http://localhost:9200/imdb_persons' -f rawdata/name.basics.tsv
     python3 ${C}/python/convert_title.py 'http://localhost:9200/movies' -t ${C}/rawdata/title.basics.tsv -n ${C}/rawdata/name.basics.tsv
     deactivate
 }

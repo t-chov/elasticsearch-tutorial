@@ -1,4 +1,4 @@
-# Elasticsearch 勉強そのに
+# 触りながら学ぶ Elasticsearch 複合クエリ
 
 ## 複合クエリ
 
@@ -17,7 +17,7 @@
 }
 ```
 
-たとえばフレーズクエリを利用して `michael j fox` を検索した場合、音響スタッフのマイケル J フォックス氏もヒットする。
+たとえばフレーズクエリを利用して `The Girl with the Dragon Tattoo` を検索した場合、2009年のスウェーデン映画と2011年のハリウッド映画の両方がヒットする。
 
 ```sh
 curl -i -X POST \
@@ -26,16 +26,16 @@ curl -i -X POST \
 '{
   "query": {
     "match_phrase": {
-      "primary_name": {
-        "query": "michael j fox"
+      "primary_title": {
+        "query": "The Girl with the Dragon Tattoo"
       }
     }
   }
 }' \
- 'http://localhost:9200/imdb_persons/_search?pretty'
+ 'http://localhost:9200/movies/_search?pretty'
 ```
 
-俳優のマイケル J. フォックスに絞るためには `bool` クエリを利用する。
+2011 年のほうに絞りたいのであれば、 bool クエリを利用する。
 
 ```sh
 curl -i -X POST \
@@ -45,22 +45,20 @@ curl -i -X POST \
   "query": {
     "bool": {
       "must": [
-        {"match_phrase": {"primary_name": {"query": "michael j fox"}}}
+        {"match_phrase": {"primary_title": {"query": "The Girl with the Dragon Tattoo"}}}
       ],
       "filter": [
-        {"term":{"primary_profession":"actor"}}
+        {"term":{"film_year":2011}}
       ]
     }
   }
 }' \
- 'http://localhost:9200/imdb_persons/_search?pretty'
+ 'http://localhost:9200/movies/_search?pretty'
 ```
 
-`must`, `should`, `must_not` はスコアに影響するが、 `filter` はスコアに影響しない。
+備考: `must`, `should`, `must_not` はスコアに影響するが、 `filter` はスコアに影響しない。
 
 ## クエリのソート
-
-ここからは2000年以降の映画を集めた `movies` インデックスを使う。
 
 たとえば `star wars` で検索すると、 [Saving Star Wars](https://en.wikipedia.org/wiki/Saving_Star_Wars) なる謎の映画がトップするので、 IMDb のレビュー数でソートしてみる。
 
@@ -160,4 +158,4 @@ curl -i -X POST \
   ]
 }
 ```
-このようなクエリを送っても、マークハミルやサミュエルLジャクソンが重視されるわけではない。
+このようなクエリを送っても、マーク・ハミルやサミュエル・L・ジャクソンが重視されるわけではない。
