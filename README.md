@@ -19,5 +19,4 @@ notice: If you use Mac, you have to increase memory limit for docker.
 ## check URL
 
 - http://localhost:9200/_cat/indices?v
-- http://localhost:9200/imdb_persons/_search?q=kurosawa
 - http://localhost:9200/movies/_search?q=300
