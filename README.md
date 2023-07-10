@@ -1,13 +1,13 @@
 # elasticsearch-tutorial
 
-Elasticsearch tutorial.
+Elasticsearch 未経験者が一通り Elasticsearch を使えるようになるためのハンズオンです。
 
 ## how to use
 
 1. Use docker-compose
 2. Provision data
-    - It uses IMDb datasets.(sanitize with some condition)
-    - Data will place in `rawdata/`
+   - It uses IMDb datasets.(sanitize with some condition)
+   - Data will place in `rawdata/`
 
 ```sh
 $ docker-compose up
@@ -18,5 +18,5 @@ notice: If you use Mac, you have to increase memory limit for docker.
 
 ## check URL
 
-- http://localhost:9200/_cat/indices?v
-- http://localhost:9200/movies/_search?q=300
+- http://localhost:9200/\_cat/indices?v
+- http://localhost:9200/movies/\_search?q=300
