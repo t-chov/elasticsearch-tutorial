@@ -82,6 +82,8 @@ curl -s 'https://gist.githubusercontent.com/leoyuholo/b12f882a92a25d43cf90e29812
     http://localhost:29200/pokemon/_bulk --data-binary @-
 ```
 
+データ投入には [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) を用いている。詳細はスクリプトの中身を参照してほしい。
+
 無事にデータが投入されたら、クエリを実行してみよう。無事に 801 匹のポケモンが投入されているはずだ。
 
 ```json
