@@ -12,6 +12,7 @@
 
 - 実サービスでのインフラ構成
 - データ更新フローの構築
+- 運用ノウハウ
 
 # 2 環境構築
 
@@ -74,10 +75,15 @@ PUT example_index
 GET _cat/indices
 ```
 
+`number_of_shards` で、インデックスをいくつに分割するか設定する。
+`number_of_replicas` は 1 シャードにつきいくつレプリカを持つか設定する。
+
+分散させる場合では、`number_of_shards * ( number_of_replicas + 1)` が構成台数の倍数になっていることが望ましいが、運用の領域に入るため詳しく触れない。
+
 正しく起動していれば、 `_cat/indices` は値を返す。
 
 ```
 green open example_index tsYdEH4VTqq-8QltANSjYw 1 0 0 0 247b 247b
 ```
 
-/ [next: 用語](./02_words.md)
+/ [next: 用語と基本的なデータ投入](./02_words.md)

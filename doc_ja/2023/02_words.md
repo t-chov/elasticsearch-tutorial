@@ -1,4 +1,4 @@
-# 2 用語
+# 2 用語と基本的なデータ投入
 
 Elasticsearch (以下 Es と表記) は **全文検索** を得意とするソフトウェアである。
 その他にも得意なことは多いが、多くのソフトウェアエンジニアにとってなじみ深い RDB とは以下のような違いがある。
@@ -33,13 +33,16 @@ Es では **インデックス** という単位でデータをまとめて管�
 Dev Tools に以下の内容を追記し、実行してみよう。もしもフシギダネが嫌いなら、ヒトカゲやゼニガメのデータを送っても良いだろう。
 
 ```json
-POST example_index/_doc/1
+PUT example_index/_doc/1
 {
   "id": 1,
   "name": "Bulbasaur",
-  "type": ["glass", "poison"]
+  "type": ["grass", "poison"]
 }
 ```
+
+id, name, type の 3 フィールドを持つ。色々と試したい人は高さや重さ、特性や種族値を入れても良いだろう。
+公式ドキュメントの [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html) を参照のこと。
 
 成功すれば、Es からは以下のような応答が返る。
 
@@ -62,7 +65,47 @@ POST example_index/_doc/1
 フシギダネが投入されたので、次はフシギソウとフシギバナを投入しよう。
 
 ```json
-
+PUT example_index/_doc/2
+{
+  "id": 2,
+  "name": "Ivysaur",
+  "type": ["grass", "poison"]
+}
+PUT example_index/_doc/3
+{
+  "id": 3,
+  "name": "Venusaur",
+  "type": ["grass", "poison"]
+}
 ```
 
-[prev: はじめに](./01_introduciton.md)
+これで、 `example_index` インデックスには
+
+- id: 1 の Bulbasaur
+- id: 2 の Ivysaur
+- id: 3 の Venusaur
+
+の 3 ドキュメントが投入された。
+
+## 2.2 最初の検索
+
+Elasticsearch は全文検索エンジンなので、検索をしてみよう。まずは最も簡単なクエリを発行する。
+
+```json
+GET example_index/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+実行すれば、3 ドキュメントが返却されるはずだ。
+
+このインデックスはもう使わないので、インデックスを削除する。
+
+```json
+DELETE example_index
+```
+
+[prev: はじめに](./01_introduciton.md) / [next: 実践的なインデックスを作成する](./03_create_practical_index.md)
